@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
+      background-color: #f9f9f9;
       color: #222;
       margin: 0;
       padding: 0;
@@ -15,70 +15,76 @@
     }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 25px;
-      background-color: #007BFF;
+      background-color: #007bff;
       color: white;
-    }
-
-    .logo {
-      font-size: 22px;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 24px;
       font-weight: bold;
-    }
-
-    .menu {
       position: relative;
     }
 
-    .menu button {
+    .menu-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
       background: transparent;
       border: none;
       color: white;
-      font-size: 22px;
+      font-size: 26px;
       cursor: pointer;
     }
 
-    .dropdown {
+    .menu-content {
       display: none;
       position: absolute;
-      right: 0;
-      background: white;
-      color: black;
-      border-radius: 6px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      top: 55px;
+      right: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
-      z-index: 100;
+      z-index: 999;
     }
 
-    .dropdown a {
+    .menu-content.show {
       display: block;
-      padding: 10px 15px;
+    }
+
+    .menu-content a {
+      display: block;
+      color: #333;
+      padding: 10px 20px;
       text-decoration: none;
-      color: black;
-      transition: background 0.2s;
+      font-size: 16px;
+      border-bottom: 1px solid #ddd;
     }
 
-    .dropdown a:hover {
-      background: #eee;
-    }
-
-    .show {
-      display: block;
-    }
-
-    main {
-      padding: 40px 20px;
-      text-align: center;
+    .menu-content a:hover {
+      background-color: #f0f0f0;
     }
 
     .section {
       display: none;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
     }
 
     .active {
       display: block;
+    }
+
+    .toggle-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      cursor: pointer;
     }
 
     .dark-mode {
@@ -90,118 +96,117 @@
       background-color: #333;
     }
 
-    .toggle-btn {
-      background: #fff;
-      border: none;
-      border-radius: 5px;
-      padding: 5px 10px;
-      cursor: pointer;
-      font-size: 14px;
-      color: #007BFF;
+    .dark-mode .menu-content {
+      background-color: #222;
+      color: white;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-size: 15px;
+      resize: none;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">📘 Study Hub</div>
-    <div>
-      <button class="toggle-btn" id="toggleMode">🌙</button>
-      <div class="menu">
-        <button id="menuBtn">⋮</button>
-        <div class="dropdown" id="dropdownMenu">
-          <a href="#" data-target="calc">🧮 Calculator</a>
-          <a href="#" data-target="gpa">🎓 GPA Calculator</a>
-          <a href="#" data-target="notes">📝 Notes</a>
-          <a href="#" data-target="quiz">❓ Quiz Generator</a>
-          <a href="#" data-target="chat">💬 Chat</a>
-          <a href="#" data-target="contact">📩 Contact</a>
-        </div>
-      </div>
+    Study Hub
+    <button class="menu-btn">⋮</button>
+    <div class="menu-content">
+      <a href="#" onclick="showSection('calc')">Calculator</a>
+      <a href="#" onclick="showSection('gpa')">GPA Calculator</a>
+      <a href="#" onclick="showSection('notes')">Notes</a>
+      <a href="#" onclick="showSection('quiz')">Quiz</a>
+      <a href="#" onclick="showSection('chat')">Chat</a>
+      <a href="#" onclick="showSection('feedback')">Feedback</a>
+      <a href="#" onclick="showSection('contact')">Contact</a>
     </div>
   </header>
 
-  <main>
-    <section id="welcome" class="section active">
-      <h1>Welcome to Study Hub!</h1>
-      <p>Select a tool from the menu (⋮) to get started.</p>
-    </section>
+  <div id="calc" class="section active">
+    <h2>Calculator</h2>
+    <input type="text" id="calcInput" placeholder="Enter expression (e.g. 5*5+2)" />
+    <button onclick="calculate()">=</button>
+    <p id="calcResult"></p>
+  </div>
 
-    <section id="calc" class="section">
-      <h2>Calculator</h2>
-      <iframe src="https://www.desmos.com/scientific" width="100%" height="400" style="border:none;"></iframe>
-    </section>
+  <div id="gpa" class="section">
+    <h2>GPA Calculator</h2>
+    <p>Simple GPA calculator coming soon.</p>
+  </div>
 
-    <section id="gpa" class="section">
-      <h2>GPA Calculator</h2>
-      <p>Coming soon!</p>
-    </section>
+  <div id="notes" class="section">
+    <h2>Notes</h2>
+    <textarea id="notesArea" placeholder="Write your notes here..."></textarea>
+  </div>
 
-    <section id="notes" class="section">
-      <h2>Notes</h2>
-      <textarea id="notesArea" placeholder="Write your notes here..." style="width:80%;height:200px;"></textarea><br>
-      <button onclick="saveNotes()">Save</button>
-      <p id="saveMsg"></p>
-    </section>
+  <div id="quiz" class="section">
+    <h2>Quiz Generator</h2>
+    <p>Enter a topic to generate a quiz (coming soon!)</p>
+  </div>
 
-    <section id="quiz" class="section">
-      <h2>Quiz Generator</h2>
-      <p>Coming soon!</p>
-    </section>
+  <div id="chat" class="section">
+    <h2>Student Chat</h2>
+    <script id="cid0020000421621854556" data-cfasync="false" async src="//st.chatango.com/js/gz/emb.js" style="width: 250px;height: 350px;">
+      {"handle":"student25","arch":"js","styles":{"a":"cc0000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"cc0000","l":"cc0000","m":"cc0000","n":"FFFFFF","p":"10","q":"cc0000","r":100,"fwtickm":1}}
+    </script>
+  </div>
 
-    <section id="chat" class="section">
-      <h2>💬 Study Chat</h2>
-      <div style="display:flex;justify-content:center;margin-top:10px;">
-        <script id="cid0020000421621854556" data-cfasync="false" async src="//st.chatango.com/js/gz/emb.js" style="width: 300px;height: 400px;">
-          {"handle":"student25","arch":"js","styles":{"a":"cc0000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"cc0000","l":"cc0000","m":"cc0000","n":"FFFFFF","p":"10","q":"cc0000","r":100,"fwtickm":1}}
-        </script>
-      </div>
-    </section>
+  <div id="feedback" class="section">
+    <h2>Feedback</h2>
+    <textarea placeholder="Write your feedback here... (for now, it won’t send yet)"></textarea>
+  </div>
 
-    <section id="contact" class="section">
-      <h2>Contact Us</h2>
-      <p>Email:</p>
-      <p>We’d love your feedback!</p>
-    </section>
-  </main>
+  <div id="contact" class="section">
+    <h2>Contact</h2>
+    <p>Contact page coming soon!</p>
+  </div>
+
+  <button class="toggle-btn" id="toggleMode">🌙</button>
 
   <script>
-    // menu toggle
-    const menuBtn = document.getElementById("menuBtn");
-    const dropdown = document.getElementById("dropdownMenu");
-    menuBtn.addEventListener("click", () => {
-      dropdown.classList.toggle("show");
+    const menuBtn = document.querySelector('.menu-btn');
+    const menuContent = document.querySelector('.menu-content');
+    const menuLinks = document.querySelectorAll('.menu-content a');
+    const sections = document.querySelectorAll('.section');
+    const toggleBtn = document.getElementById('toggleMode');
+
+    function showSection(id) {
+      sections.forEach(section => section.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      menuContent.classList.remove('show'); // close menu automatically
+    }
+
+    menuBtn.addEventListener('click', () => {
+      menuContent.classList.toggle('show');
     });
 
-    // section switching
-    document.querySelectorAll(".dropdown a").forEach(link => {
-      link.addEventListener("click", e => {
-        e.preventDefault();
-        document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
-        const target = link.getAttribute("data-target");
-        document.getElementById(target).classList.add("active");
-        dropdown.classList.remove("show");
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        menuContent.classList.remove('show');
       });
     });
 
-    // dark/light mode
-    const toggleBtn = document.getElementById("toggleMode");
-    toggleBtn.addEventListener("click", () => {
-      document.body.classList.toggle("dark-mode");
-      toggleBtn.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      toggleBtn.textContent = document.body.classList.contains('dark-mode')
+        ? "☀️"
+        : "🌙";
     });
 
-    // save notes
-    function saveNotes() {
-      const text = document.getElementById("notesArea").value;
-      localStorage.setItem("studyNotes", text);
-      document.getElementById("saveMsg").textContent = "✅ Notes saved!";
+    function calculate() {
+      const input = document.getElementById('calcInput').value;
+      try {
+        const result = eval(input);
+        document.getElementById('calcResult').textContent = `Result: ${result}`;
+      } catch {
+        document.getElementById('calcResult').textContent = "Invalid input!";
+      }
     }
-
-    // load notes
-    window.onload = () => {
-      const saved = localStorage.getItem("studyNotes");
-      if (saved) document.getElementById("notesArea").value = saved;
-    };
   </script>
 </body>
 </html>
