@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Study Hub</title>
   <style>
     :root {
-      --primary: #007bff;
-      --bg-light: #f9f9f9;
-      --text-light: #222;
+      --bg-light: #ffffff;
       --bg-dark: #121212;
-      --text-dark: #fff;
+      --text-light: #000000;
+      --text-dark: #ffffff;
+      --accent: #007bff;
     }
-
-    * { box-sizing: border-box; }
 
     body {
       font-family: "Segoe UI", Arial, sans-serif;
@@ -21,121 +19,7 @@
       color: var(--text-light);
       margin: 0;
       padding: 0;
-      transition: background-color 0.6s ease, color 0.6s ease;
-    }
-
-    header {
-      background-color: var(--primary);
-      color: white;
-      padding: 15px 20px;
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-      position: relative;
-      z-index: 1000;
-    }
-
-    .menu-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 26px;
-      cursor: pointer;
-      padding: 10px;
-    }
-
-    .menu-content {
-      position: absolute;
-      top: 55px;
-      right: 15px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      overflow: hidden;
-      z-index: 999;
-      width: 180px;
-      max-height: 0;
-      opacity: 0;
-      transform: translateY(-10px);
-      transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    .menu-content.show {
-      max-height: 500px;
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .menu-content a {
-      display: block;
-      color: #333;
-      padding: 12px 15px;
-      text-decoration: none;
-      font-size: 16px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .menu-content a:hover {
-      background-color: #f4f4f4;
-    }
-
-    .section {
-      display: none;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    .active {
-      display: block;
-      animation: fadeIn 0.4s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    input[type="text"], textarea {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    button {
-      padding: 10px 16px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      background-color: var(--primary);
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #005ec2;
-    }
-
-    .toggle-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
+      transition: background-color 0.4s, color 0.4s;
     }
 
     .dark-mode {
@@ -143,167 +27,283 @@
       color: var(--text-dark);
     }
 
-    .dark-mode header {
-      background-color: #222;
-    }
-
-    .dark-mode .menu-content {
-      background-color: #222;
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--accent);
       color: white;
+      padding: 10px 20px;
     }
 
-    .dark-mode .menu-content a {
-      color: #ddd;
-    }
-
-    .dark-mode .menu-content a:hover {
-      background-color: #333;
-    }
-
-    /* Full-screen Chat Styling */
-    #chat.fullscreen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--bg-light);
-      z-index: 999;
-      padding: 0;
-      margin: 0;
-      overflow: hidden;
-      animation: fadeIn 0.4s ease;
-    }
-
-    #chat.fullscreen h2 {
-      display: none;
-    }
-
-    #chat iframe, #chat script {
-      width: 100% !important;
-      height: calc(100vh - 10px) !important;
-    }
-
-    .back-btn {
-      position: absolute;
-      top: 10px;
-      left: 15px;
-      background: transparent;
-      color: white;
+    .menu-btn {
       font-size: 22px;
-      border: none;
       cursor: pointer;
     }
 
-    @media (max-width: 600px) {
-      header { font-size: 20px; padding: 12px; }
-      .menu-content { width: 160px; }
-      .toggle-btn {
-        bottom: 15px;
-        right: 15px;
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-      }
+    .menu-content {
+      display: none;
+      position: absolute;
+      right: 15px;
+      top: 50px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .menu-content a {
+      display: block;
+      padding: 10px 20px;
+      color: black;
+      text-decoration: none;
+    }
+
+    .menu-content a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .menu-content.show {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    main {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--accent);
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover { opacity: 0.9; }
+
+    select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .question {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
   <header>
-    Study Hub
-    <button class="menu-btn">⋮</button>
+    <h2>📘 Study Hub</h2>
+    <div>
+      <span id="theme-toggle" style="cursor:pointer;">🌙</span>
+      <span class="menu-btn">⋮</span>
+    </div>
     <div class="menu-content">
-      <a href="#" onclick="showSection('calc')">Calculator</a>
-      <a href="#" onclick="showSection('notes')">Notes</a>
-      <a href="#" onclick="showSection('quiz')">Quiz</a>
-      <a href="#" onclick="showChat()">Chat</a>
-      <a href="#" onclick="showSection('feedback')">Feedback</a>
+      <a href="#" data-section="calc">🧮 Calculator</a>
+      <a href="#" data-section="gpa">🎓 GPA Calculator</a>
+      <a href="#" data-section="notes">📝 Notes</a>
+      <a href="#" data-section="quiz">❓ Quiz</a>
+      <a href="#" data-section="chat">💬 Chat</a>
+      <a href="#" data-section="feedback">📨 Feedback</a>
+      <a href="#" data-section="contact">📞 Contact</a>
     </div>
   </header>
 
-  <div id="calc" class="section active">
-    <h2>Calculator</h2>
-    <input type="text" id="calcInput" placeholder="Enter expression (e.g. 5*5+2)" />
-    <button onclick="calculate()">=</button>
-    <p id="calcResult"></p>
-  </div>
-
-  <div id="notes" class="section">
-    <h2>Notes</h2>
-    <textarea id="notesArea" placeholder="Write your notes here..."></textarea>
-  </div>
-
-  <div id="quiz" class="section">
-    <h2>Quiz Generator</h2>
-    <p>Coming soon!</p>
-  </div>
-
-  <div id="chat" class="section">
-    <button class="back-btn" onclick="closeChat()">⬅</button>
-    <div style="display:flex;justify-content:center;height:100%;">
-      <script id="cid0020000421621854556" data-cfasync="false" async 
-        src="//st.chatango.com/js/gz/emb.js" style="width:100%;height:90vh;">
-        {"handle":"student25","arch":"js","styles":{"a":"cc0000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"cc0000","l":"cc0000","m":"cc0000","n":"FFFFFF","p":"10","q":"cc0000","r":100,"fwtickm":1}}
-      </script>
-    </div>
-  </div>
-
-  <div id="feedback" class="section">
-    <h2>Feedback</h2>
-    <textarea placeholder="Write your feedback here... (blank for now)"></textarea>
-  </div>
-
-  <button class="toggle-btn" id="toggleMode">🌙</button>
+  <main id="content">
+    <h3>Welcome to Study Hub!</h3>
+    <p>Select a tool from the menu above to get started.</p>
+  </main>
 
   <script>
     const menuBtn = document.querySelector('.menu-btn');
     const menuContent = document.querySelector('.menu-content');
-    const sections = document.querySelectorAll('.section');
-    const toggleBtn = document.getElementById('toggleMode');
-    const chatSection = document.getElementById('chat');
+    const themeToggle = document.getElementById('theme-toggle');
+    const content = document.getElementById('content');
 
-    menuBtn.addEventListener('click', () => {
-      menuContent.classList.toggle('show');
+    menuBtn.addEventListener('click', () => menuContent.classList.toggle('show'));
+
+    document.querySelectorAll('.menu-content a').forEach(link => {
+      link.addEventListener('click', () => {
+        menuContent.classList.remove('show');
+        const section = link.getAttribute('data-section');
+        loadSection(section);
+      });
     });
 
-    function showSection(id) {
-      sections.forEach(s => s.classList.remove('active', 'fullscreen'));
-      document.getElementById(id).classList.add('active');
-      menuContent.classList.remove('show');
-    }
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    });
 
-    function calculate() {
-      const input = document.getElementById('calcInput').value;
-      try {
-        document.getElementById('calcResult').textContent = `Result: ${eval(input)}`;
-      } catch {
-        document.getElementById('calcResult').textContent = "Invalid input!";
+    function loadSection(section) {
+      if (section === 'quiz') {
+        content.innerHTML = `
+          <h3>Quiz Generator</h3>
+          <label for="subject">Choose a subject:</label>
+          <select id="subject">
+            <option value="math">Math</option>
+            <option value="english">English</option>
+            <option value="science">Science</option>
+          </select>
+          <button id="generate">Generate Quiz</button>
+          <div id="quizArea"></div>
+        `;
+
+        document.getElementById('generate').addEventListener('click', generateQuiz);
+      } else if (section === 'feedback') {
+        content.innerHTML = `
+          <h3>Feedback</h3>
+          <textarea placeholder="Write your feedback..."></textarea>
+          <button>Submit</button>
+        `;
+      } else {
+        content.innerHTML = `<h3>${linkText(section)} coming soon...</h3>`;
       }
     }
 
-    function showChat() {
-      sections.forEach(s => s.classList.remove('active'));
-      chatSection.classList.add('active', 'fullscreen');
-      menuContent.classList.remove('show');
+    function linkText(section) {
+      const map = {
+        calc: 'Calculator',
+        gpa: 'GPA Calculator',
+        notes: 'Notes',
+        chat: 'Chat',
+        contact: 'Contact'
+      };
+      return map[section] || section;
     }
 
-    function closeChat() {
-      chatSection.classList.remove('fullscreen');
-      showSection('calc');
+    function generateQuiz() {
+      const subject = document.getElementById('subject').value;
+      const quizArea = document.getElementById('quizArea');
+      quizArea.innerHTML = "";
+
+      const quizData = {
+        math: {
+          mc: [
+            { q: "What is 5 + 7?", options: ["10", "12", "14", "15"], correct: "12" },
+            { q: "Solve: 9 × 3", options: ["27", "18", "36", "30"], correct: "27" },
+            { q: "Simplify: 8 ÷ 2", options: ["2", "4", "8", "6"], correct: "4" },
+            { q: "Square root of 49?", options: ["6", "7", "8", "9"], correct: "7" },
+            { q: "What is 15 - 9?", options: ["5", "6", "7", "8"], correct: "6" }
+          ],
+          open: [
+            { q: "What is 10 × 10?", correct: "100" },
+            { q: "Solve: 30 ÷ 5", correct: "6" },
+            { q: "What is 9²?", correct: "81" },
+            { q: "Solve for x: 2x = 12", correct: "6" },
+            { q: "What is 50% of 200?", correct: "100" }
+          ]
+        },
+        english: {
+          mc: [
+            { q: "Which is a noun?", options: ["Run", "Blue", "Happiness", "Quickly"], correct: "Happiness" },
+            { q: "Past tense of 'go'?", options: ["Go", "Went", "Gone", "Going"], correct: "Went" },
+            { q: "Which word is an adjective?", options: ["Run", "Beautiful", "Swim", "Quickly"], correct: "Beautiful" },
+            { q: "Opposite of 'hot'?", options: ["Warm", "Cold", "Cool", "Boiling"], correct: "Cold" },
+            { q: "Which is a verb?", options: ["Dog", "Jump", "Happy", "Red"], correct: "Jump" }
+          ],
+          open: [
+            { q: "Write a synonym for 'big'.", correct: "large" },
+            { q: "Write the plural of 'child'.", correct: "children" },
+            { q: "Complete: She ___ to school.", correct: "goes" },
+            { q: "Antonym of 'good'.", correct: "bad" },
+            { q: "What is the past tense of 'eat'?", correct: "ate" }
+          ]
+        },
+        science: {
+          mc: [
+            { q: "What planet is known as the Red Planet?", options: ["Earth", "Mars", "Venus", "Jupiter"], correct: "Mars" },
+            { q: "Water freezes at ___ °C.", options: ["0", "10", "50", "100"], correct: "0" },
+            { q: "What gas do plants absorb?", options: ["Oxygen", "Nitrogen", "Carbon dioxide", "Hydrogen"], correct: "Carbon dioxide" },
+            { q: "Which organ pumps blood?", options: ["Lungs", "Heart", "Brain", "Kidneys"], correct: "Heart" },
+            { q: "What is H₂O?", options: ["Oxygen", "Hydrogen", "Water", "Salt"], correct: "Water" }
+          ],
+          open: [
+            { q: "Name the closest planet to the Sun.", correct: "Mercury" },
+            { q: "What gas do humans breathe in?", correct: "Oxygen" },
+            { q: "What part of the plant makes food?", correct: "Leaf" },
+            { q: "What is the center of an atom called?", correct: "Nucleus" },
+            { q: "Name one state of matter.", correct: "Solid" }
+          ]
+        }
+      };
+
+      const set = quizData[subject];
+      let html = "";
+
+      // Multiple Choice
+      html += `<h4>Multiple Choice Questions</h4>`;
+      set.mc.forEach((item, i) => {
+        html += `
+          <div class="question">
+            <p>${i + 1}. ${item.q}</p>
+            ${item.options.map(opt => `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label><br>`).join("")}
+            <button onclick="checkMC(${i}, '${item.correct}')">Check</button>
+            <div id="result${i}" class="result"></div>
+          </div>
+        `;
+      });
+
+      // Open-Ended
+      html += `<h4>Open-Ended Questions</h4>`;
+      set.open.forEach((item, i) => {
+        html += `
+          <div class="question">
+            <p>${i + 6}. ${item.q}</p>
+            <input type="text" id="open${i}" placeholder="Type your answer">
+            <button onclick="checkOpen(${i}, '${item.correct}')">Check</button>
+            <div id="ores${i}" class="result"></div>
+          </div>
+        `;
+      });
+
+      quizArea.innerHTML = html;
     }
 
-    toggleBtn.addEventListener('click', () => {
-      document.body.style.transition = 'background-color 0.6s ease, color 0.6s ease';
-      document.body.classList.toggle('dark-mode');
-      toggleBtn.textContent = document.body.classList.contains('dark-mode') ? "☀️" : "🌙";
-      document.body.animate(
-        [
-          { opacity: 0.6, transform: 'scale(0.98)' },
-          { opacity: 1, transform: 'scale(1)' }
-        ],
-        { duration: 400, easing: 'ease-out' }
-      );
-    });
+    function checkMC(num, correct) {
+      const chosen = document.querySelector(`input[name="q${num}"]:checked`);
+      const result = document.getElementById(`result${num}`);
+      if (!chosen) result.textContent = "❌ Choose an answer!";
+      else if (chosen.value === correct) result.textContent = "✅ Correct!";
+      else result.textContent = `❌ Wrong! Correct: ${correct}`;
+    }
+
+    function checkOpen(num, correct) {
+      const ans = document.getElementById(`open${num}`).value.trim().toLowerCase();
+      const result = document.getElementById(`ores${num}`);
+      if (ans === correct.toLowerCase()) result.textContent = "✅ Correct!";
+      else result.textContent = `❌ Correct answer: ${correct}`;
+    }
   </script>
 </body>
 </html>
