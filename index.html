@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Study Hub</title>
 <style>
   :root {
@@ -77,6 +77,12 @@
     padding:4px 10px;
     color:white;
   }
+  .feedback-item {
+    background:var(--card);
+    margin:10px 0;
+    padding:10px;
+    border-radius:8px;
+  }
 </style>
 </head>
 <body>
@@ -149,14 +155,16 @@
 <!-- Feedback -->
 <section id="feedback">
   <h2>Feedback & Suggestions</h2>
-  <p>We’d love to hear your thoughts 💬 — suggest new features or improvements!</p>
-  <form id="feedbackForm" action="https://formspree.io/f/mabcdxyz" method="POST">
-    <input type="text" name="name" placeholder="Your Name" required><br><br>
-    <input type="email" name="email" placeholder="Your Email" required><br><br>
-    <textarea name="message" placeholder="Your Feedback..." rows="6" required></textarea><br><br>
-    <button type="submit">Send Feedback</button>
+  <p>We’d love to hear your ideas! Suggest new features or improvements below 👇</p>
+
+  <form id="feedbackForm">
+    <input type="text" id="fbName" placeholder="Your Name" required><br><br>
+    <textarea id="fbMessage" placeholder="Your Feedback..." rows="4" required></textarea><br><br>
+    <button type="submit">Submit Feedback</button>
   </form>
-  <p id="feedbackResult"></p>
+
+  <h3>🗒️ Community Feedback</h3>
+  <div id="feedbackList"></div>
 </section>
 
 <script>
@@ -212,17 +220,22 @@ function sendMsg(e){
   e.preventDefault();
   document.getElementById('msgResult').innerText="Message sent! (demo only)";
 }
-const form = document.getElementById("feedbackForm");
-form.addEventListener("submit", async (e)=>{
+
+// Feedback logic
+const feedbackForm=document.getElementById('feedbackForm');
+const feedbackList=document.getElementById('feedbackList');
+
+feedbackForm.addEventListener('submit',(e)=>{
   e.preventDefault();
-  const data = new FormData(form);
-  const res = await fetch(form.action, { method:"POST", body:data, headers:{'Accept':'application/json'} });
-  if(res.ok){
-    document.getElementById("feedbackResult").innerText = "✅ Thanks! Your feedback was sent successfully.";
-    form.reset();
-  } else {
-    document.getElementById("feedbackResult").innerText = "❌ Error sending feedback. Try again later.";
-  }
+  const name=document.getElementById('fbName').value.trim();
+  const msg=document.getElementById('fbMessage').value.trim();
+  if(!name||!msg)return alert('Fill in both fields!');
+  const div=document.createElement('div');
+  div.className='feedback-item';
+  div.innerHTML=`<strong>${name}:</strong> ${msg}`;
+  feedbackList.prepend(div);
+  feedbackForm.reset();
+  // Optional: Send a copy to email with Formspree (add if you want later)
 });
 </script>
 </body>
