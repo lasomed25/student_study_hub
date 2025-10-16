@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Study Hub</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #111;
+    --card: #f1f1f1;
+  }
+  body.dark {
+    --bg: #0b0b0b;
+    --text: #f8f8f8;
+    --card: #1e1e1e;
+  }
+  body {
+    margin:0;
+    font-family: "Poppins", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: 0.3s;
+  }
+  header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 20px;
+    background:#0b1b3a;
+    color:white;
+  }
+  header img {
+    height:50px;
+  }
+  .menu {
+    position:relative;
+  }
+  .menu button {
+    background:none;
+    border:none;
+    color:white;
+    font-size:24px;
+    cursor:pointer;
+  }
+  .dropdown {
+    display:none;
+    position:absolute;
+    right:0;
+    background:var(--card);
+    border-radius:8px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.2);
+    overflow:hidden;
+  }
+  .dropdown a {
+    display:block;
+    padding:10px 15px;
+    text-decoration:none;
+    color:var(--text);
+  }
+  .dropdown a:hover {
+    background:#007bff;
+    color:white;
+  }
+  section {
+    padding:20px;
+    display:none;
+  }
+  section.active {
+    display:block;
+  }
+  .dark-toggle {
+    cursor:pointer;
+    background:none;
+    border:1px solid white;
+    border-radius:8px;
+    padding:4px 10px;
+    color:white;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <img src="Study_Hub_logo.png" alt="Study Hub Logo">
+    <h1>Study Hub</h1>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="dark-toggle" onclick="toggleDark()">🌙</button>
+    <div class="menu">
+      <button onclick="toggleMenu()">⋮</button>
+      <div class="dropdown" id="dropdown">
+        <a href="#" onclick="showSection('calc')">Calculator</a>
+        <a href="#" onclick="showSection('gpa')">GPA Calculator</a>
+        <a href="#" onclick="showSection('notes')">Notes</a>
+        <a href="#" onclick="showSection('quiz')">Quiz Generator</a>
+        <a href="#" onclick="showSection('contact')">Contact</a>
+        <a href="#" onclick="showSection('feedback')">Feedback</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Calculator -->
+<section id="calc" class="active">
+  <h2>Calculator</h2>
+  <input id="calcInput" placeholder="Type expression (e.g. 2+2*3)" style="width:80%;padding:5px;">
+  <button onclick="calc()">=</button>
+  <p id="calcResult"></p>
+</section>
+
+<!-- GPA -->
+<section id="gpa">
+  <h2>GPA Calculator</h2>
+  <textarea id="grades" rows="5" cols="40" placeholder="Enter grades separated by commas (e.g. 90,80,100)"></textarea><br>
+  <button onclick="calcGPA()">Calculate</button>
+  <p id="gpaResult"></p>
+</section>
+
+<!-- Notes -->
+<section id="notes">
+  <h2>Notes</h2>
+  <textarea id="noteInput" rows="5" cols="50" placeholder="Write your notes..."></textarea><br>
+  <button onclick="saveNote()">Save</button>
+  <h3>Saved Notes:</h3>
+  <ul id="noteList"></ul>
+</section>
+
+<!-- Quiz -->
+<section id="quiz">
+  <h2>Quiz Generator</h2>
+  <input id="topic" placeholder="Topic (e.g. algebra)">
+  <button onclick="generateQuiz()">Generate</button>
+  <ul id="quizList"></ul>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <h2>Contact</h2>
+  <form onsubmit="sendMsg(event)">
+    <input type="text" id="name" placeholder="Your Name" required><br><br>
+    <input type="email" id="email" placeholder="Your Email" required><br><br>
+    <textarea id="msg" placeholder="Message..." required></textarea><br><br>
+    <button type="submit">Send</button>
+  </form>
+  <p id="msgResult"></p>
+</section>
+
+<!-- Feedback -->
+<section id="feedback">
+  <h2>Feedback & Suggestions</h2>
+  <p>We’d love to hear your thoughts 💬 — suggest new features or improvements!</p>
+  <form id="feedbackForm" action="https://formspree.io/f/mabcdxyz" method="POST">
+    <input type="text" name="name" placeholder="Your Name" required><br><br>
+    <input type="email" name="email" placeholder="Your Email" required><br><br>
+    <textarea name="message" placeholder="Your Feedback..." rows="6" required></textarea><br><br>
+    <button type="submit">Send Feedback</button>
+  </form>
+  <p id="feedbackResult"></p>
+</section>
+
+<script>
+function toggleMenu(){
+  const dd = document.getElementById('dropdown');
+  dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
+}
+function toggleDark(){
+  document.body.classList.toggle('dark');
+}
+function showSection(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('dropdown').style.display='none';
+}
+function calc(){
+  const val=document.getElementById('calcInput').value;
+  try{document.getElementById('calcResult').innerText="Result: "+eval(val);}catch{alert("Invalid expression")}
+}
+function calcGPA(){
+  const arr=document.getElementById('grades').value.split(',').map(Number).filter(n=>!isNaN(n));
+  if(!arr.length)return alert("Enter valid numbers");
+  const avg=arr.reduce((a,b)=>a+b,0)/arr.length;
+  document.getElementById('gpaResult').innerText="GPA: "+(avg/25).toFixed(2);
+}
+function saveNote(){
+  const text=document.getElementById('noteInput').value.trim();
+  if(!text)return;
+  const li=document.createElement('li');
+  li.innerText=text;
+  document.getElementById('noteList').appendChild(li);
+  document.getElementById('noteInput').value='';
+}
+function generateQuiz(){
+  const topic=document.getElementById('topic').value.trim();
+  if(!topic)return alert("Enter a topic");
+  const list=document.getElementById('quizList');
+  list.innerHTML='';
+  const questions=[
+    `What is ${topic}?`,
+    `Why is ${topic} important?`,
+    `Give one example related to ${topic}.`,
+    `Explain a key rule of ${topic}.`,
+    `Solve a basic ${topic} problem.`
+  ];
+  questions.forEach(q=>{
+    const li=document.createElement('li');
+    li.innerText=q;
+    list.appendChild(li);
+  });
+}
+function sendMsg(e){
+  e.preventDefault();
+  document.getElementById('msgResult').innerText="Message sent! (demo only)";
+}
+const form = document.getElementById("feedbackForm");
+form.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const data = new FormData(form);
+  const res = await fetch(form.action, { method:"POST", body:data, headers:{'Accept':'application/json'} });
+  if(res.ok){
+    document.getElementById("feedbackResult").innerText = "✅ Thanks! Your feedback was sent successfully.";
+    form.reset();
+  } else {
+    document.getElementById("feedbackResult").innerText = "❌ Error sending feedback. Try again later.";
+  }
+});
+</script>
+</body>
+</html>
